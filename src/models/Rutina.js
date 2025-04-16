@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-
 const Rutina = sequelize.define("Rutina", {
     id: {
         type: DataTypes.INTEGER,
@@ -11,8 +10,12 @@ const Rutina = sequelize.define("Rutina", {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    Usuario_id: {
+    Descripcion: {
         type: DataTypes.STRING,
+        allowNull: false,
+    },
+    Usuario_id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
     Created_at: {
@@ -29,5 +32,6 @@ const Rutina = sequelize.define("Rutina", {
     tableName: 'rutinas',  // Especificar el nombre exacto de la tabla si es diferente
     timestamps: false,  // Si no usas las columnas 'createdAt' y 'updatedAt'
 });
+
 
 module.exports = Rutina;

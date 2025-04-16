@@ -14,9 +14,9 @@ router.post("/login", async (req, res) => {
         // Verificar si se pasa el nombre de usuario o el email
         let user;
         if (nombreUsuario) {
-            user = await User.findOne({ where: { Nombre_Usuario: nombreUsuario } });
+            user = await User.findOne({ where: { Nombre_Usuario: nombreUsuario, Cuenta_activa: 1 } });
         } else if (email) {
-            user = await User.findOne({ where: { Email: email } });
+            user = await User.findOne({ where: { Email: email, Cuenta_activa: 1 } });
         }
 
         // Si no se encuentra el usuario
@@ -37,7 +37,7 @@ router.post("/login", async (req, res) => {
         );
 
         // Responder con el token
-        res.json({ message: "Login exitoso", token });
+        res.json({ message: "Login exitoso", token, idUser: user.id });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error del servidor" });
@@ -71,7 +71,7 @@ router.post("/register", async (req, res) => {
             Password: req.body.Password,
             Token: token,
             FechaCreacionToken: new Date(),
-            Cuenta_activa: 0 
+            Cuenta_activa: 0
         });
         // Enviar correo de verificación
         await enviarCorreoVerificacion(req.body.Email, token);
@@ -87,7 +87,7 @@ router.get("/verify?:token", async (req, res) => {
     try {
         const { token } = req.query;
         const decoded = jwt.decode(token);
-        
+
 
         const user = await User.findOne({ where: { Nombre_Usuario: decoded.usuario } });
         if (!user) {
@@ -102,7 +102,6 @@ router.get("/verify?:token", async (req, res) => {
         res.status(200).json({ message: "Cuenta activada correctamente" });
     } catch (error) {
         console.log(error);
-        
         res.status(400).json({ error: "Token inválido o expirado"});
     }
 });

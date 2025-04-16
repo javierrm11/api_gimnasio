@@ -1,7 +1,7 @@
 const express = require("express");
-const User = require("../models/User");
+const { User, Rutina, RutinaEjercicio, EstadisticasEjercicio, Ejercicio, DuracionEntrenamiento } = require("../models/association");
 const authenticateJWT = require("../middleware/auth");
-
+const { where } = require("sequelize");
 const router = express.Router();
 
 
@@ -9,7 +9,52 @@ const router = express.Router();
 
 // Obtener el usuario autenticado
 router.get("/", authenticateJWT, (req, res) => {
-    res.json({ message: "Acceso autorizado", user: req.user });
+    const id = req.user.id;
+    User.findByPk(id)
+        .then((user) => {
+            if (!user) {
+                return res.status(404).json({ message: "Usuario no encontrado" });
+            }
+            res.json(user);
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).json({ message: "Error del servidor" });
+        });
+});
+
+//obtener usuario
+router.get("/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await User.findByPk(id, {
+            include: [
+                {
+                    model: Rutina,
+                    as: "rutinas",
+                    include: [
+                        {
+                            model: RutinaEjercicio,
+                            as: "rutinaEjercicio",
+                            include: [
+                                {
+                                    model: Ejercicio,
+                                    as: "ejercicio",
+                                },
+                            ],
+                        }
+                    ],
+                },
+            ],
+        });
+        if (!user) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+        res.json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error del servidor" });
+    }
 });
 
 // editar usuario

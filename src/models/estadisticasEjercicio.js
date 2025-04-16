@@ -1,33 +1,39 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const Rutina = sequelize.define("Rutina", {
+const EstadisticasEjercicio = sequelize.define("EstadisticasEjercicio", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-    Nombre: {
+    id_serie: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    Usuario_id: {
+    RutinaEjercicio_id: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    Created_at: {
-        type: DataTypes.DATE,
+    Serie: {
+        type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: DataTypes.NOW,
     },
-    Updated_at: {
-        type: DataTypes.DATE,
+    Peso: {
+        type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: DataTypes.NOW,
-    }
+    },
+    Repeticiones: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    Fecha: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
 },{
-    tableName: 'rutinas',  // Especificar el nombre exacto de la tabla si es diferente
+    tableName: 'estadisticas_ejercicios',  // Especificar el nombre exacto de la tabla si es diferente
     timestamps: false,  // Si no usas las columnas 'createdAt' y 'updatedAt'
 });
 
-module.exports = Rutina;
+module.exports = EstadisticasEjercicio;

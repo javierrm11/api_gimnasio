@@ -15,6 +15,10 @@ const Ejercicio = sequelize.define("Ejercicio", {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    Foto: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     Categoria: {
         type: DataTypes.STRING,
         allowNull: false,

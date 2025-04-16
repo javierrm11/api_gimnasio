@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const RutinaEjercicio = sequelize.define("RutinaEjercicio", {
+const DuracionEntrenamiento = sequelize.define("DuracionEntrenamiento", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -11,17 +11,17 @@ const RutinaEjercicio = sequelize.define("RutinaEjercicio", {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    Ejercicio_id: {
-        type: DataTypes.INTEGER,
+    Fecha: {
+        type: DataTypes.STRING,
         allowNull: false,
     },
-    Num_Series: {
+    Duracion: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
 },{
-    tableName: 'rutinaejercicios',  // Especificar el nombre exacto de la tabla si es diferente
+    tableName: 'duraciones_entrenamientos',  // Especificar el nombre exacto de la tabla si es diferente
     timestamps: false,  // Si no usas las columnas 'createdAt' y 'updatedAt'
 });
 
-module.exports = RutinaEjercicio;
+module.exports = DuracionEntrenamiento;
