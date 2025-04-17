@@ -1,12 +1,5 @@
 const express = require("express");
 const DuracionEntrenamiento = require("../models/duracionEntrenamiento");
-const Ejercicio = require("../models/ejercicio");
-const RutinaEjercicio = require("../models/rutinaEjercicio");
-const Rutina = require("../models/rutina");
-const authenticateJWT = require("../middleware/auth");
-const sequelize = require("../config/database");
-const jwt = require("jsonwebtoken");
-const { where } = require("sequelize");
 
 const router = express.Router();
 

@@ -2,6 +2,7 @@ const express = require("express");
 const { User, Rutina, RutinaEjercicio, EstadisticasEjercicio, Ejercicio, DuracionEntrenamiento } = require("../models/association");
 const authenticateJWT = require("../middleware/auth");
 const { where } = require("sequelize");
+const upload = require("../middleware/upload"); // archivo que configuraste con multer
 const router = express.Router();
 
 
@@ -58,8 +59,8 @@ router.get("/:id", async (req, res) => {
 });
 
 // editar usuario
-router.put("/", authenticateJWT, async (req, res) => {
-    const { Nombre_Usuario, Nombre, Email, Descripcion, Foto } = req.body;
+router.put("/", authenticateJWT, upload.single("fotoPerfil"), async (req, res) => {
+    const { Nombre_Usuario, Nombre, Email, Descripcion } = req.body;
     const { id } = req.user;
 
     try {
@@ -67,18 +68,23 @@ router.put("/", authenticateJWT, async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "Usuario no encontrado" });
         }
+
+        // Si hay una nueva imagen, la actualizamos
+        const fotoPath = req.file ? `/uploads/profiles/${req.file.filename}` : user.Foto;
+
+        // Actualizamos los campos
         user.Nombre_Usuario = Nombre_Usuario || user.Nombre_Usuario;
         user.Nombre = Nombre || user.Nombre;
         user.Email = Email || user.Email;
         user.Descripcion = Descripcion || user.Descripcion;
-        user.Foto = Foto || user.Foto;
+        user.Foto = fotoPath;
 
         await user.save();
 
         res.json({ message: "Usuario actualizado", user });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error del servidor" });
+        console.error("Error al actualizar usuario:", error);
+        res.status(500).json({ message: "Error del servidor", error: error.message });
     }
 });
 

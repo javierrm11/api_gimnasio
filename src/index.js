@@ -11,6 +11,7 @@ const rutinasRoutes = require("./routes/rutinas");
 const estadisticasEjercicio = require("./routes/estadisticasEjercicios");
 const duracionEntrenamiento = require("./routes/duracionEntrenamiento");
 const ejercicio = require("./routes/ejercicio");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -26,6 +27,8 @@ app.use("/api/rutinas", rutinasRoutes);
 app.use("/api/ejercicio", ejercicio);
 app.use("/api/estadisticasEjercicio", estadisticasEjercicio);
 app.use("/api/duracion", duracionEntrenamiento);
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 // Conectar a la base de datos y ejecutar el servidor

@@ -222,7 +222,7 @@ router.get("/:id", (req, res) => {
       });
       setTimeout(() => {
         res.json(response);
-      }, 1000);
+      }, 100);
     })
     .catch((error) => {
       console.error(error);

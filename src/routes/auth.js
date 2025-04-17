@@ -1,6 +1,8 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const upload = require("../middleware/upload"); // archivo que configuraste con multer
+const path = require("path");
 const crypto = require("crypto");
 const { enviarCorreoVerificacion } = require("../services/emailService"); // Importamos el servicio de email
 
@@ -58,29 +60,35 @@ const generarToken = (nombreUsuario) => {
     );
 };
 
-// Agregar un usuario
-router.post("/register", async (req, res) => {
+// Agregar un usuario con foto de perfil
+router.post("/register", upload.single("fotoPerfil"), async (req, res) => {
     try {
-        let token = generarToken(req.body.Nombre_Usuario);
-        const newUser = await User.create({ 
-            Nombre_Usuario: req.body.Nombre_Usuario,
-            Nombre: req.body.Nombre,
-            Email: req.body.Email,
-            Foto: req.body.Foto,
-            Descripcion: req.body.Descripcion,
-            Password: req.body.Password,
-            Token: token,
-            FechaCreacionToken: new Date(),
-            Cuenta_activa: 0
-        });
-        // Enviar correo de verificación
-        await enviarCorreoVerificacion(req.body.Email, token);
-
-        res.status(201).json(newUser);
+      const { Nombre_Usuario, Nombre, Email, Descripcion, Password } = req.body;
+      const fotoPath = req.file ? `/uploads/profiles/${req.file.filename}` : null;
+  
+      let token = generarToken(Nombre_Usuario);
+  
+      const newUser = await User.create({
+        Nombre_Usuario,
+        Nombre,
+        Email,
+        Foto: fotoPath,
+        Descripcion,
+        Password,
+        Token: token,
+        FechaCreacionToken: new Date(),
+        Cuenta_activa: 0
+      });
+  
+      await enviarCorreoVerificacion(Email, token);
+  
+      res.status(201).json(newUser);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+      console.error("Error al registrar usuario:", error);
+      res.status(500).json({ error: error.message });
     }
 });
+  
 
 // ruta para verificar la cuenta
 router.get("/verify?:token", async (req, res) => {
