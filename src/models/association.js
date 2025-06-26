@@ -1,5 +1,5 @@
 const User = require("./User");
-const Rutina = require("./rutina.js");
+const Rutina = require("./rutina");
 const DuracionEntrenamiento = require("./duracionEntrenamiento");
 const RutinaEjercicio = require("./rutinaEjercicio");
 const EstadisticasEjercicio = require("./estadisticasEjercicio");
