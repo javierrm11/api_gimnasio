@@ -12,7 +12,7 @@ const EstadisticasEjercicio = sequelize.define("EstadisticasEjercicio", {
         allowNull: false,
     },
     RutinaEjercicio_id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
     Serie: {
