@@ -1,5 +1,5 @@
 const User = require("./user");
-const Rutina = require("./rutina");
+const Rutina = require("./Rutina");
 
 // Definir asociaciones
 User.hasMany(Rutina, { foreignKey: "Usuario_id", as: "Rutinas" });
