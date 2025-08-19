@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 
 // Función para enviar el email de verificación
 const enviarCorreoVerificacion = async (email, token) => {
-    const verificationLink = `${process.env.BASE_URL}/api/auth/verify?token=${token}`;
+    const verificationLink = `${process.env.VUE_APP_BASE_URL}/mensaje?msg=Cuenta%20activada&token=${token}`;
     const mailOptions = {
         from: '"Gym" <javierrumo2@gmail.com>',
         to: email,
