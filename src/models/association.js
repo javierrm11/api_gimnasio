@@ -4,6 +4,7 @@ const DuracionEntrenamiento = require("./duracionEntrenamiento");
 const RutinaEjercicio = require("./rutinaEjercicio");
 const EstadisticasEjercicio = require("./estadisticasEjercicio");
 const Ejercicio = require("./ejercicio");
+const Seguidores = require("./seguidores");
 // Definir asociaciones
 
 // Usuario tiene muchas rutinas y una rutina pertenece a un usuario
@@ -26,4 +27,12 @@ Ejercicio.hasMany(RutinaEjercicio, { foreignKey: "Ejercicio_id", as: "rutinaEjer
 RutinaEjercicio.belongsTo(Rutina, { foreignKey: "Rutina_id", as: "rutina" });
 Rutina.hasMany(RutinaEjercicio, { foreignKey: "Rutina_id", as: "rutinaEjercicio" });
 
-module.exports = { User, Rutina, DuracionEntrenamiento, RutinaEjercicio, EstadisticasEjercicio, Ejercicio };
+// Usuario tiene muchos seguidores y un usuario puede seguir a muchos usuarios
+User.hasMany(Seguidores, { foreignKey: "seguido_id", as: "seguidores" });
+User.hasMany(Seguidores, { foreignKey: "seguidor_id", as: "seguidos" });
+Seguidores.belongsTo(User, { foreignKey: "seguido_id", as: "seguidor" });
+Seguidores.belongsTo(User, { foreignKey: "seguidor_id", as: "seguido" });
+
+
+
+module.exports = { User, Rutina, DuracionEntrenamiento, RutinaEjercicio, EstadisticasEjercicio, Ejercicio, Seguidores };

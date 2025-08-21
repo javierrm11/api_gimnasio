@@ -10,6 +10,7 @@ const authRoutes = require("./routes/auth");
 const rutinasRoutes = require("./routes/rutinas");
 const estadisticasEjercicio = require("./routes/estadisticasEjercicios");
 const duracionEntrenamiento = require("./routes/duracionEntrenamiento");
+const seguidores = require("./routes/seguidores");
 const ejercicio = require("./routes/ejercicio");
 const path = require("path");
 
@@ -27,6 +28,7 @@ app.use("/api/rutinas", rutinasRoutes);
 app.use("/api/ejercicio", ejercicio);
 app.use("/api/estadisticasEjercicio", estadisticasEjercicio);
 app.use("/api/duracion", duracionEntrenamiento);
+app.use("/api/seguidores", seguidores);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
