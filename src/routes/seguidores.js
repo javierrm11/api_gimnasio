@@ -81,6 +81,32 @@ router.delete("/:seguido_id", authenticateJWT, async (req, res) => {
         res.status(500).json({ message: "Error del servidor" });
     }
 });
+// suprimir un seguidor
+router.delete("/suprimir/:seguidor_id", authenticateJWT, async (req, res) => {
+    const { seguidor_id } = req.params;
+    const seguido_id = req.user.id;
+
+    try {
+        // Buscar el seguidor
+        const seguidor = await Seguidores.findOne({
+            where: { seguidor_id, seguido_id }
+        });
+
+        if (!seguidor) {
+            return res.status(404).json({ message: "No tienes este seguidor" });
+        }
+
+        // Eliminar el seguidor
+        await Seguidores.destroy({
+            where: { seguidor_id, seguido_id }
+        });
+
+        res.status(200).json({ message: "Seguidor eliminado correctamente" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error del servidor" });
+    }
+});
 
 
 
